@@ -1,0 +1,22 @@
+{
+  "name": "eos-market-info",
+  "version": "1.0.0",
+  "description": "EOS Market Info",
+  "main": "index.js",
+  "scripts": {
+    "test": "tsc && tape 'test/**/*-test.js'",
+    "precommit": "tslint . && yarn test",
+    "prepare": "tsc",
+    "postpublish": "git push && git push --tags",
+    "docs": "documentation readme index.js --section=API"
+  },
+  "repository": "git@github.com:eosnationftw/eos-ram-price.git",
+  "author": "Denis <denis@eosnation.io>",
+  "license": "MIT",
+  "devDependencies": {
+    "documentation": "*",
+    "tape": "*",
+    "tslint": "*",
+    "typescript": "*"
+  }
+}
