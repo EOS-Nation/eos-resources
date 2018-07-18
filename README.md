@@ -1,5 +1,9 @@
 # EOS Resources
 
+[![Build Status](https://travis-ci.org/EOS-Nation/eos-resources.svg?branch=master)](https://travis-ci.org/EOS-Nation/eos-resources)
+[![npm version](https://badge.fury.io/js/eos-resources.svg)](https://badge.fury.io/js/eos-resources)
+[![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/EOS-Nation/eos-resources/master/LICENSE)
+
 Quickly and easily retrieve EOS Resources metrics from the EOSIO blockchain.
 
 > This library is being actively maintained by [EOS Nation FTW](https://eosnation.io), show your support by voting for `eosnationftw` on the EOSIO mainnet.
