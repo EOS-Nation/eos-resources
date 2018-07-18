@@ -1,39 +1,148 @@
+import axios from "axios";
+
+const DEFAULT_API = "https://api.eosn.io";
+
 /**
  * EOS RAM Price in kilobytes
  *
- * @param {Object} rammarket table eosio eosio rammarket (JSON)
- * @returns {number} EOS RAM Price in kilobytes
+ * @param {Object} [rammarket] table eosio eosio rammarket (JSON)
+ * @returns {Promise<number>} EOS RAM Price in kilobytes
  * @example
- * import { eosRamPriceKb } from 'eos-market-info';
+ * import { eosRamPriceKb } from 'eos-resource';
  *
- * const rammarket = {
- *   "rows": [{
- *       "supply": "10000000000.0000 RAMCORE",
- *       "base": {
- *         "balance": "29576462570 RAM",
- *         "weight": "0.50000000000000000"
- *       },
- *       "quote": {
- *         "balance": "2323462.3453 EOS",
- *         "weight": "0.50000000000000000"
- *       }
- *     }
- *   ],
- *   "more": false
- * }
- * const priceKb = eosRamPriceKb(rammarket);
- * priceKb //=> 0.08044544
+ * (async () => {
+ *   const priceKb = await eosRamPriceKb(rammarket);
+ *   priceKb //=> 0.08044544
+ * })()
  */
-export function eosRamPriceKb(rammarket: any) {
-  // asserts
-  if (!rammarket) { throw new Error("table eosio eosio rammarket is required"); }
-  if (!rammarket.rows.length) { throw new Error("table eosio eosio rammarket is missing rows"); }
+export async function eosRamPriceKb(rammarket?: any) {
+    if (!rammarket) { rammarket = await getRAMMarket(); }
 
-  // variables
-  const baseBalance = rammarket.rows[0].base.balance.replace(" RAM", "");
-  const quoteBalance = rammarket.rows[0].quote.balance.replace(" EOS", "");
-  const priceKb = Number((quoteBalance / baseBalance).toFixed(8)) * 1024;
+    // asserts
+    if (!rammarket.rows.length) { throw new Error("table eosio eosio rammarket is missing rows"); }
 
-  // results
-  return priceKb;
+    // variables
+    const baseBalance = rammarket.rows[0].base.balance.replace(" RAM", "");
+    const quoteBalance = rammarket.rows[0].quote.balance.replace(" EOS", "");
+    const priceKb = Number((quoteBalance / baseBalance).toFixed(8)) * 1024;
+
+    // results
+    return priceKb;
 }
+
+/**
+ * EOS CPU Price in milliseconds
+ *
+ * @param {Object} [account] Account Details JSON
+ * @returns {number} EOS CPU Price in milliseconds
+ * @example
+ * import { eosCpuPriceMs } from 'eos-resource';
+ *
+ * (async () => {
+ *   const priceMs = await eosCpuPriceMs();
+ *   priceMs //=> 26.415
+ * })()
+ */
+export async function eosCpuPriceMs(account?: any) {
+    if (!account) { account = await getAccount("eosnationftw"); }
+
+    if (!account.total_resources) { throw new Error("[total_resources] is missing in account"); }
+    if (!account.cpu_limit) { throw new Error("[cpu_limit] is missing in account"); }
+
+    const { total_resources, cpu_limit } = account;
+    const cpu_weight = total_resources.cpu_weight.replace(" EOS", "");
+    const priceMs = Number(cpu_limit.max / cpu_weight) / 1000;
+
+    return priceMs;
+}
+
+/**
+ * EOS Net Price in kilobytes
+ *
+ * @param {Object} [account] Account Details JSON
+ * @returns {number} EOS Net Price in kilobytes
+ * @example
+ * import { eosNetPriceKb } from 'eos-resource';
+ *
+ * (async () => {
+ *   const priceKb = await eosNetPriceKb();
+ *   priceKb //=> 607.375
+ * })()
+ */
+export async function eosNetPriceKb(account?: any) {
+    if (!account) { account = await getAccount("eosnationftw"); }
+
+    if (!account.total_resources) { throw new Error("[total_resources] is missing in account"); }
+    if (!account.net_limit) { throw new Error("[net_limit] is missing in account"); }
+
+    const { total_resources, net_limit } = account;
+    const net_weight = total_resources.net_weight.replace(" EOS", "");
+    const priceKb = Number(net_limit.max / net_weight) / 1024;
+
+    return priceKb;
+}
+
+/**
+ * Get Account
+ *
+ * @param {string} account_name Account Name
+ * @param {string} [api="https://api.eosn.io"] EOSIO API endpoint
+ * @returns {Promise<Object>} Account Details JSON
+ * @example
+ * import { getAccount } from 'eos-resource';
+ *
+ * (async () => {
+ *   const account = await getAccount('eosnationftw');
+ *   account //=> EOSIO Account JSON
+ * })()
+ */
+export function getAccount(account_name: string, api = DEFAULT_API) {
+    const url = `${api}/v1/chain/get_account`;
+    const params = { account_name };
+    const configs = { responseType: "JSON" };
+    return axios.post(url, params, configs)
+        .then((request) => {
+            return request.data;
+        })
+        .catch((error) => {
+            if (error) { console.error(error); }
+        });
+}
+
+/**
+ * Get RAM Market
+ *
+ * @param {string} [api="https://api.eosn.io"] EOSIO API endpoint
+ * @returns {Promise<Object>} RAM Market JSON
+ * @example
+ * import { getRAMMarket } from 'eos-resource';
+ *
+ * (async () => {
+ *   const rammarket = await getRAMMarket();
+ *   rammarket //=> EOSIO RAM Market JSON
+ * })()
+ */
+export function getRAMMarket(api = DEFAULT_API) {
+    const url = `${api}/v1/chain/get_table_rows`;
+    const params = {
+        scope: "eosio",
+        code: "eosio",
+        table: "rammarket",
+        json: true,
+    };
+    const configs = { responseType: "JSON" };
+    return axios.post(url, params, configs)
+        .then((request) => {
+            return request.data;
+        })
+        .catch((error) => {
+            if (error) { console.error(error); }
+        });
+}
+
+// (async () => {
+//     const priceKb = await eosNetPriceKb()
+//     console.log(priceKb)
+//     const priceMs = await eosCpuPriceMs()
+//     console.log(priceMs)
+// })();

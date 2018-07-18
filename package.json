@@ -1,14 +1,15 @@
 {
-  "name": "eos-market-info",
+  "name": "eos-resource",
   "version": "1.0.0",
-  "description": "EOS Market Info",
+  "description": "EOS Resource",
   "main": "index.js",
+  "types": "index.d.ts",
   "scripts": {
     "test": "tsc && tape 'test/**/*-test.js'",
     "precommit": "tslint . && yarn test",
     "prepare": "tsc",
     "postpublish": "git push && git push --tags",
-    "docs": "documentation readme index.js --section=API"
+    "docs": "tsc && documentation readme index.js --section=API"
   },
   "repository": "git@github.com:eosnationftw/eos-ram-price.git",
   "author": "Denis <denis@eosnation.io>",
@@ -18,5 +19,8 @@
     "tape": "*",
     "tslint": "*",
     "typescript": "*"
+  },
+  "dependencies": {
+    "axios": "*"
   }
 }
