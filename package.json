@@ -4,6 +4,10 @@
   "description": "EOS Resources",
   "main": "index.js",
   "types": "index.d.ts",
+  "files": [
+    "index.js",
+    "index.d.ts"
+  ],
   "scripts": {
     "test": "tsc && tape 'test/**/*-test.js'",
     "precommit": "tslint . && yarn test",
