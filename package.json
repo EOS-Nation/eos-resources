@@ -1,6 +1,6 @@
 {
   "name": "eos-resources",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "EOS Resources",
   "main": "index.js",
   "types": "index.d.ts",
