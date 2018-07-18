@@ -8,7 +8,7 @@ const DEFAULT_API = "https://api.eosn.io";
  * @param {Object} [rammarket] table eosio eosio rammarket (JSON)
  * @returns {Promise<number>} EOS RAM Price in kilobytes
  * @example
- * import { eosRamPriceKb } from 'eos-resource';
+ * import { eosRamPriceKb } from 'eos-resources';
  *
  * (async () => {
  *   const priceKb = await eosRamPriceKb(rammarket);
@@ -36,7 +36,7 @@ export async function eosRamPriceKb(rammarket?: any) {
  * @param {Object} [account] Account Details JSON
  * @returns {number} EOS CPU Price in milliseconds
  * @example
- * import { eosCpuPriceMs } from 'eos-resource';
+ * import { eosCpuPriceMs } from 'eos-resources';
  *
  * (async () => {
  *   const priceMs = await eosCpuPriceMs();
@@ -62,7 +62,7 @@ export async function eosCpuPriceMs(account?: any) {
  * @param {Object} [account] Account Details JSON
  * @returns {number} EOS Net Price in kilobytes
  * @example
- * import { eosNetPriceKb } from 'eos-resource';
+ * import { eosNetPriceKb } from 'eos-resources';
  *
  * (async () => {
  *   const priceKb = await eosNetPriceKb();
@@ -89,7 +89,7 @@ export async function eosNetPriceKb(account?: any) {
  * @param {string} [api="https://api.eosn.io"] EOSIO API endpoint
  * @returns {Promise<Object>} Account Details JSON
  * @example
- * import { getAccount } from 'eos-resource';
+ * import { getAccount } from 'eos-resources';
  *
  * (async () => {
  *   const account = await getAccount('eosnationftw');
@@ -115,7 +115,7 @@ export function getAccount(account_name: string, api = DEFAULT_API) {
  * @param {string} [api="https://api.eosn.io"] EOSIO API endpoint
  * @returns {Promise<Object>} RAM Market JSON
  * @example
- * import { getRAMMarket } from 'eos-resource';
+ * import { getRAMMarket } from 'eos-resources';
  *
  * (async () => {
  *   const rammarket = await getRAMMarket();

@@ -1,7 +1,7 @@
 {
-  "name": "eos-resource",
+  "name": "eos-resources",
   "version": "1.0.0",
-  "description": "EOS Resource",
+  "description": "EOS Resources",
   "main": "index.js",
   "types": "index.d.ts",
   "scripts": {
